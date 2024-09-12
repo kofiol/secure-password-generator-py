@@ -4,12 +4,9 @@ import colorama
 from colorama import just_fix_windows_console
 just_fix_windows_console()
 import hashlib
-import json
-import math
+import database
 
 
-with open('hashes.json') as file:
-    data = json.load(file)
 with open('dictionary.txt') as dict_file:
     dictionary = dict_file.read().splitlines()
 
@@ -45,7 +42,7 @@ while True:
     hash_object = hashlib.sha256()
     hash_object.update(password.encode('utf-8'))
     hash = hash_object.hexdigest()
-    if hash in data.values():
+    if database.hash_exists(hash):
         print(f"looks like the hash is already present in the database, generating a new one.")
         while True:
             additional_word = secrets.choice(dictionary)
@@ -66,8 +63,5 @@ print("your password is: " + colorama.Fore.GREEN + password + colorama.Style.RES
 print("advise: better save it on paper or at least in a reliable password manager!")
 
 
-last_var = max(map(int, data.keys()))
-next_var = last_var + 1
-data[str(next_var)] = hash
-with open('hashes.json', 'w') as f:
-    json.dump(data, f, indent=4)
+database.add_hash(hash)
+
