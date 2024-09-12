@@ -3,4 +3,4 @@
 
 This code uses the "secrets" library to generate secure passwords and will use SQLite or PostgreSQL to store hashes of passwords, but now it uses JSON to store hashes which is not really secure.
 
-Maybe I will make the database remote and public so anyone can generate storng passwords that never have been used (or atleast in the database)
+Maybe I will make the database remote and public so anyone can generate storng passwords that never have been used (or at least they are not in the database)
