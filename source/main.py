@@ -5,7 +5,6 @@ from colorama import just_fix_windows_console
 just_fix_windows_console()
 import hashlib
 import json
-# from database import Database
 
 with open('hashes.json') as file:
     data = json.load(file)
@@ -26,14 +25,17 @@ hash_object = hashlib.sha256()
 hash_object.update(password.encode('utf-8'))
 hash = hash_object.hexdigest()
 
-# db = Database('hashes.db')
-# db.add_new_hash(hash)
-
-# make real checking if the password is strong or not and implement function to remake the password again if it is not strong
-# add database thing so it actually never repeats
-# maybe will do json for now because just easier
-
 print(colorama.Fore.GREEN + password + colorama.Style.RESET_ALL)
 print(colorama.Fore.RED + hash)
 print(colorama.Fore.BLUE + data['1'] + colorama.Style.RESET_ALL)
 
+if hash in data.values():
+    print(f"Looks like the hash is already present in the database, make a new one.")
+else:
+    print(f"The password is not present in the database, you can use it.")
+
+last_var = max(map(int, data.keys()))
+next_var = last_var + 1
+data[str(next_var)] = hash
+with open('hashes.json', 'w') as f:
+    json.dump(data, f, indent=4)
